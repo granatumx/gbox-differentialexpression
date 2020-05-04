@@ -1,0 +1,9 @@
+id: DifferentialExpression-{VER}
+
+meta:
+  maintainer:
+    name: Tianying Zhao
+    email: tianying@hawaii.edu
+
+gboxes:
+  - ./yamls/DESeq2.yaml
