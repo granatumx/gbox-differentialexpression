@@ -6,7 +6,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 RUN apt-get update
-
+RUN apt-get -y install python-pip
 RUN apt-get install -y apt-utils build-essential git tmux curl python-pip
 
 RUN apt-get install -y vim-tiny apt-transport-https software-properties-common 
