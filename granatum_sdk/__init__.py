@@ -8,6 +8,7 @@ import pickle
 
 from base64 import b64encode
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def random_string(n=5):
