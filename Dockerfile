@@ -16,6 +16,7 @@ RUN apt-get update
 RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 RUN apt-get install -y r-base python3-rpy2
 
+RUN apt-get install python3-matplotlib
 RUN apt-get install -y --no-install-recommends ed locales \
 		wget \
 		fonts-texgyre \
