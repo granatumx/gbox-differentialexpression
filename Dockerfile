@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+RUN apt-get install software-properties-common
 RUN add-apt-repository universe
 RUN apt-get update
 RUN apt-get -y install python-pip
