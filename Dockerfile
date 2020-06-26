@@ -47,7 +47,7 @@ COPY . .
 RUN apt-get update
 RUN apt-get install -y sed bash
 ARG VER=1.0.0
-ARG GBOX=gbox:1.0.0
+ARG GBOX=granatumx/gbox-differentialexpression:1.0.0
 ENV VER=$VER
 ENV GBOX=$GBOX
 WORKDIR /usr/src/app
