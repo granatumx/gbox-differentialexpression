@@ -12,7 +12,7 @@ meta:
     [here](http://www.bioconductor.org/packages/release/bioc/html/DESeq2.html).
 endpoints:
   backend:
-    cmd: python ./run_DESeq2.py
+    cmd: python3 ./run_DESeq2.py
     type: docker
     image: {GBOX}
 frontend:
