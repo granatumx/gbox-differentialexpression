@@ -7,10 +7,7 @@ WORKDIR /usr/src/app
 
 RUN apt-get update
 
-RUN apt-get -y install software-properties-common
-RUN add-apt-repository universe
-RUN apt-get -y install python-pip
-RUN apt-get install -y apt-utils build-essential git tmux curl python-pip
+RUN apt-get install -y apt-utils build-essential git tmux curl python3-pip
 
 RUN apt-get install -y vim-tiny apt-transport-https software-properties-common 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
