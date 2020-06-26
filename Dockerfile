@@ -5,8 +5,9 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-RUN add-apt-repository universe
+RUN apt-get install software-properties-common
 RUN apt-get update
+RUN add-apt-repository universe
 RUN apt-get -y install python-pip
 RUN apt-get install -y apt-utils build-essential git tmux curl python-pip
 
