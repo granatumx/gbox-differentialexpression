@@ -14,7 +14,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD5
 RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
 RUN apt-get update
 RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
-RUN apt-get install -y r-base python-rpy2
+RUN apt-get install -y r-base python3-rpy2
 
 RUN apt-get install -y --no-install-recommends ed locales \
 		wget \
