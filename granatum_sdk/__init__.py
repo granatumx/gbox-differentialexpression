@@ -99,7 +99,7 @@ class Granatum:
     self.results.append({
       'type': data_type,
       'data': data,
-      **kwargs,
+      **kwargs
     })
 
   #-- commit  -------------------------------------------------
