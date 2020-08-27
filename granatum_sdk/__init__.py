@@ -8,6 +8,7 @@ import pickle
 
 from base64 import b64encode
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def random_string(n=5):
@@ -94,12 +95,15 @@ class Granatum:
         'data': image_b64,
       }
     )
+  
+  def add_pandas_df(self, df, description=None):
+    self.results.append({"type": "table", "description": description, "data": json.loads(df.to_json(orient='split')),})
 
   def add_result(self, data, data_type='json', **kwargs):
     self.results.append({
       'type': data_type,
       'data': data,
-      **kwargs,
+      **kwargs
     })
 
   #-- commit  -------------------------------------------------
@@ -110,6 +114,15 @@ class Granatum:
 
     with open(self.results_file, 'w') as f:
       json.dump(self.results, f)
+      
+  #-- helpers  -------------------------------------------------
+  
+  def pandas_from_assay(self, assay, samples_as_rows=False):
+    df = pd.DataFrame(assay.get("matrix"), index=assay.get("geneIds"), columns=assay.get("sampleIds"))
+    if samples_as_rows:
+      df = df.transpose()
+      
+    return df
 
   #-- error  -------------------------------------------------
 
