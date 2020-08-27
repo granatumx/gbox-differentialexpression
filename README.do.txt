@@ -27,8 +27,8 @@ to deposit the preferences on the database. Since these gboxes are in fact docke
 pulled if they do not exist locally on the system. Convenience scripts are provided for installing specific gboxes.
 
 !bc sys
-$ gx run.sh                                  # Will start the database, taskrunner, and webapp
-$ gx installGbox.sh granatumx/scripts:1.0.0  # Install this gbox
+$ gx run.sh                                                      # Will start the database, taskrunner, and webapp
+$ gx installGbox.sh granatumx/gbox-differentialexpression:1.0.0  # Install this gbox
 
 # Now you should be able to navigate to http://localhost:34567 and see this gbox installed
 # If you add a step, you should see the installed gboxes available.
