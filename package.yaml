@@ -1,9 +1,15 @@
-id: DifferentialExpression-{VER}
+# this name will be displayed in the package installation
+id: Granatum2 Multi-Tool (written in R/Python) {VER}
 
+# this meta field provides the default meta for all gboxes
+# for example, if `./yamls/DifferentialExpression.yaml` doesn't
+# have a "maintainer" field in it, then the "maintainer" defaults
+# to the one here.
 meta:
   maintainer:
-    name: Tianying Zhao
-    email: tianying@hawaii.edu
+    name: Thomas K. Wolfgruber
+    email: twolfgruber@cc.hawaii.edu
 
+# an array of all the yaml specs for the gboxes
 gboxes:
-  - ./yamls/DESeq2.yaml
+  - ./yamls/DifferentialExpression.yaml

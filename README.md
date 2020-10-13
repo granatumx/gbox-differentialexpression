@@ -1,4 +1,4 @@
-> `gbox-differentialexpression` is a gbox that provides differential expression from R.
+> `gbox-multitool` is a gbox that provides a number of original gboxes from R.
 
 
 
@@ -29,15 +29,14 @@ pulled if they do not exist locally on the system. Convenience scripts are provi
 
 
 ```
-$ gx run.sh                                                      # Will start the database, taskrunner, and webapp
-$ gx installGbox.sh granatumx/gbox-differentialexpression:1.0.0  # Install this gbox
+$ gx run.sh                                         # Will start the database, taskrunner, and webapp
+$ gx installGbox.sh granatumx/gbox-multitool:1.0.0  # Install this gbox
 
-# Now you should be able to navigate to http://localhost:34567 and see this gbox installed
-# If you add a step, you should see the installed gboxes available.
+# Now go to http://localhost:34567 and see this gbox installed when you add a step.
 ```
 
 ### Notes
 
-The gbox has a set of parameters passed into it on the frontend. These are defined in the `yamls/DESeq2.yaml` file.
-A Python driver is used but it interfaces to the backend R packages vi rpy2.
+The gbox has a set of parameters passed into it on the frontend. These are defined in the `yamls/*.yaml` file.
+This tool uses R functions for the granatum_sdk to set up the gbox.
 

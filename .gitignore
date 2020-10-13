@@ -1,39 +1,12 @@
-# History files
-.Rhistory
-.Rapp.history
+.dlog
+input_test_de_3_groups.json
+input_test_de.json
+input_test_de_scde_small.json
+input_with_genes.json
+input_with_genes_readable.json
+notes_dynamic_ui_20180302.R
+test_de_dyn.out
+test_de.out
+warning-pesudo-time_and_norm_may_need_fix_for_io_formatting.txt
 
-# Session Data files
-.RData
-
-# User-specific files
-.Ruserdata
-
-# Example code in package build process
-*-Ex.R
-
-# Output files from R CMD build
-/*.tar.gz
-
-# Output files from R CMD check
-/*.Rcheck/
-
-# RStudio files
-.Rproj.user/
-
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
-
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
-
-# knitr and R markdown default cache directories
-*_cache/
-/cache/
-
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
-
-# R Environment Variables
-.Renviron
+*.DS_store
