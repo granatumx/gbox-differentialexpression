@@ -1,5 +1,5 @@
 VER = 1.0.0
-GBOX = granatumx/gbox-differentialexpression:$(VER)
+GBOX = granatumx/gbox-deseq2:$(VER)
 
 docker:
 	docker build --build-arg VER=$(VER) --build-arg GBOX=$(GBOX) -t $(GBOX) .
