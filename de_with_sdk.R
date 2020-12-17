@@ -8,6 +8,7 @@ library(edgeR)
 library(scde)
 library(jsonlite)
 library(MetaDE)
+library(parallel)
 
 source('./granatum_sdk.R') # Uses GranatumX SDK
 
@@ -120,7 +121,7 @@ NODES <- function(data, group, r = 20, smooth_points = 10000, zper = 0.5) {
   fdr <- p.adjust(PVAL, method = "fdr")
 
   # prepare final result
-  res <- data.frame(cbind(pvalues = PVAL, qvalues = fdr, Z = Zrs))
+  res <- data.frame(cbind(pvalues = PVAL, FDR = fdr, Z = Zrs))
 
   rownames(res) <- rownames(data)
 
@@ -306,8 +307,7 @@ set.seed(rand_seed)
 # Method: NODES, limma, edgeR, SCDE
 selected_de <- gn_get_arg('deMethod')
 
-# Number of compute cores to use
-selected_cores <- gn_get_arg('deCores')
+fdrthreshold <- gn_get_arg('fdrthreshold')
 
 # Normalized assay
 assay <- gn_get_import('assay')
@@ -348,7 +348,8 @@ if (selected_de == 'SCDE') {
   expr_matrix <- apply(expr_matrix,2,function(x) {storage.mode(x) <- 'integer'; x})
 }
 
-out_tab <- do_diff_exp(expr_matrix, expr_groups, pairwise=F, n_cores=selected_cores, selected_de)
+out_tab <- do_diff_exp(expr_matrix, expr_groups, pairwise=F, n_cores=detectCores()-1, selected_de)
+
 
 # Output allowing for dynamic UI in these results output (revision 3)
 # Results: (displayed results for the "second page")
@@ -362,25 +363,66 @@ out_tab <- do_diff_exp(expr_matrix, expr_groups, pairwise=F, n_cores=selected_co
 output = list()
 # Results section
 # output[["results"]] = list()
-for (i in 1:length(names(out_tab))) {
-  output[["results"]][[i]] <- out_tab[i]
-  names(output[["results"]][[i]]) <- "data"
-  output[["results"]][[i]][["data"]][["Gene"]] <- rownames(out_tab[[i]]) # Careful that this is different than SDK-defined rowname_header [20180720 tkwolf]
-  rownames(output[["results"]][[i]][["data"]]) <- NULL
+
+testout = list()
+
+# Filter on FDR
+for (i in names(out_tab)) {
+  temp <- out_tab[[i]]
+  # print(class(temp))
+  # print(length(temp))
+  # print(names(temp))
+  # print(rownames(temp))
+  # print(length(temp[["FDR"]]))
+  # sel <- temp[["FDR"]] < fdrthreshold
+  # print(temp[["FDR"]])
+  # testout1 <- temp[temp[,"FDR"] < fdrthreshold,]
+  # testout1 <- Filter(function(x){temp[["FDR"]][[x]] < fdrthreshold},temp)
+  testout1 <- temp[temp$FDR < fdrthreshold, ]
+  # testout1 <- list()
+  # for (j in names(temp)) {
+# 	  testout1[[j]] <- temp[[j]][sel]
+ #  }
+  testout[[i]] <- testout1
+}
+# print(testout)
+
+out_tab <- testout
+
+# print(names(out_tab))
+# print(length(names(out_tab)))
+for (i in names(out_tab)) {
+  #print(out_tab[[i]], nrows=3);
+  # out_tab[[i]] <- out_tab[[i]][out_tab[[i]]$FDR < fdrthreshold,]
+  # testout = out_tab[[i]][out_tab[[i]]$FDR < fdrthreshold,]
+  # print(out_tab[1], nrows=3)
+  # output[["results"]][[i]] <- out_tab[i][out_tab[i]$FDR < fdrthreshold,]
+  # output[["results"]][[i]] <- out_tab[[i]]
+  output[["results"]][[i]] <- list()
+  output[["results"]][[i]][["data"]] <- out_tab[[i]] # names(output[["results"]][[i]]) <- "data"
+  # print(rownames(out_tab[[i]]))
+  output[["results"]][[i]][["data"]]$Gene <- rownames(out_tab[[i]]) # Careful that this is different than SDK-defined rowname_header [20180720 tkwolf]
+  print(output[["results"]][[i]][["data"]])
+  # rownames(output[["results"]][[i]][["data"]]) <- NULL
   #output[["results"]][[i]][["type"]] <- unbox("table")
   #output[["results"]][[i]][["label"]] <- unbox(names(out_tab)[i])
   #output[["results"]][[i]][["description"]] <- unbox(sprintf("Differential expression results from %s using %s", names(out_tab)[i], selected_de))
   output[["results"]][[i]][["type"]] <- "table"
-  output[["results"]][[i]][["label"]] <- names(out_tab)[i]
+  output[["results"]][[i]][["pageSize"]] <- 20
+  output[["results"]][[i]][["label"]] <- i # names(out_tab)[i]
   output[["results"]][[i]][["description"]] <- sprintf("Differential expression results from %s using %s", names(out_tab)[i], selected_de)
+	  # sprintf("Differential expression results from %s using %s", names(out_tab)[i], selected_de)
   output[["results"]][[i]][["cols"]] <- list()
+  # print("Hello")
   for (j in 1:length(names(out_tab[[i]]))) {
     field_name <- names(out_tab[[i]])[j]
     #output[["results"]][[i]][["cols"]][[j]] <- list("name" = unbox(field_name))
     output[["results"]][[i]][["cols"]][[j]] <- list("name" = field_name)
   }
+  # print("Hello")
 }
-names(output[["results"]]) <- names(out_tab)
+# print("Out of first loop")
+# names(output[["results"]]) <- names(out_tab)
 
 # Exports section
 output[["exports"]] = list()
@@ -389,7 +431,7 @@ output[["exports"]] = list()
 # exports_index <- 1
 
 for (p in names(out_tab)) {
-  for (f in names(out_tab[[p]])) {
+  for (f in c("FDR")) { # names(out_tab[[p]])) {
     print("Executing one export")
     print(f)
     print(p)
@@ -401,11 +443,11 @@ for (p in names(out_tab)) {
     
     # When going to "dynamic" output version, comment or remove block below:
     output[["exports"]][[pair_field]] = as.list(out_tab[[p]][[f]])
-    names(output[["exports"]][[pair_field]]) = rownames(out_tab[[p]])
-    for (i in (1:length(output[["exports"]][[pair_field]]))) {
+    names(output[["exports"]][[pair_field]]) <- output[["results"]][[p]][["data"]][["Gene"]] # rownames(out_tab[[p]])
+    # for (i in (1:length(output[["exports"]][[pair_field]]))) {
       #output[["exports"]][[pair_field]][[i]] <- unbox(output[["exports"]][[pair_field]][[i]])
-       output[["exports"]][[pair_field]][[i]] <- output[["exports"]][[pair_field]][[i]]
-    }
+    #   output[["exports"]][[pair_field]][[i]] <- output[["exports"]][[pair_field]][[i]]
+    #}
     
     # When going to "dynamic" output version, uncomment block below below:
     # output[["exports"]][[exports_index]][["data"]] = as.list(out_tab[[p]][[f]])
@@ -422,14 +464,16 @@ for (p in names(out_tab)) {
 
 # Results
 for (i in 1:length(names(out_tab))) {
-  gn_add_dataframe_to_results(output[["results"]][[i]][["data"]],
-                              description=output[["results"]][[i]][["description"]],
-                              rowname_header="Record") # Note: this cannot be the same as an existing column name, e.g., "Gene" [20180720 tkwolf]
+  gn_add_dataframe_to_results(output[["results"]][[i]][["data"]]
+,
+                              description=output[["results"]][[i]][["description"]])
+#,
+#                              rowname_header="Record") # Note: this cannot be the same as an existing column name, e.g., "Gene" [20180720 tkwolf]
 }
 
 # Exports
 for (p in names(out_tab)) {
-  for (f in names(out_tab[[p]])) {
+  for (f in c("FDR")) { # names(out_tab[[p]])) {
     pair_field = sprintf("%s: %s",p,f)
 #    for (i in (1:length(output[["exports"]][[pair_field]]))) {
 #      gn_export_dynamically(output[["exports"]][[pair_field]][[i]],

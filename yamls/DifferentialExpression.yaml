@@ -27,14 +27,14 @@ frontend:
           value: SCDE
       default: NODES
       injectInto: deMethod
-    - type: number
-      label: Number of compute cores
-      default: 1
-      injectInto: deCores
     - type: seed
       label: Random seed
       default: 12345
       injectInto: seed
+    - injectInto: fdrthreshold
+      label: Filter FDR less than this threshold (0.05)
+      default: 0.05
+      type: number
   imports:
     - kind: assay
       label: Assay (recommended to use normalized assay only)
