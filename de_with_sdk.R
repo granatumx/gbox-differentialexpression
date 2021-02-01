@@ -432,7 +432,7 @@ output[["exports"]] = list()
 # exports_index <- 1
 
 for (p in names(out_tab)) {
-  for (f in c("FDR")) { # names(out_tab[[p]])) {
+  for (f in c("FDR", "Z")) { # names(out_tab[[p]])) {
     print("Executing one export")
     print(f)
     print(p)
@@ -474,7 +474,7 @@ for (i in 1:length(names(out_tab))) {
 
 # Exports
 for (p in names(out_tab)) {
-  for (f in c("FDR")) { # names(out_tab[[p]])) {
+  for (f in c("FDR", "Z")) { # names(out_tab[[p]])) {
     pair_field = sprintf("%s: %s",p,f)
 #    for (i in (1:length(output[["exports"]][[pair_field]]))) {
 #      gn_export_dynamically(output[["exports"]][[pair_field]][[i]],
