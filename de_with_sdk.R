@@ -410,7 +410,8 @@ for (i in names(out_tab)) {
   output[["results"]][[i]][["type"]] <- "table"
   output[["results"]][[i]][["pageSize"]] <- 20
   output[["results"]][[i]][["label"]] <- i # names(out_tab)[i]
-  output[["results"]][[i]][["description"]] <- sprintf("Differential expression results from %s using %s", names(out_tab)[i], selected_de)
+  # output[["results"]][[i]][["description"]] <- sprintf("Differential expression results from %s using %s", names(out_tab)[i], selected_de)
+  output[["results"]][[i]][["description"]] <- sprintf("Differential expression results from %s using %s", i, selected_de)
 	  # sprintf("Differential expression results from %s using %s", names(out_tab)[i], selected_de)
   output[["results"]][[i]][["cols"]] <- list()
   # print("Hello")
@@ -431,7 +432,7 @@ output[["exports"]] = list()
 # exports_index <- 1
 
 for (p in names(out_tab)) {
-  for (f in c("FDR")) { # names(out_tab[[p]])) {
+  for (f in c("abs_Z")) { # names(out_tab[[p]])) {
     print("Executing one export")
     print(f)
     print(p)
