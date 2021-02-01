@@ -21,8 +21,6 @@ frontend:
           value: NODES
         - label: edgeR (general)
           value: edgeR
-        - label: SCDE (single cell; very slow)
-          value: SCDE
       default: NODES
       injectInto: deMethod
     - type: seed
