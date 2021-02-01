@@ -19,8 +19,6 @@ frontend:
       choices:
         - label: NODES (single-cell)
           value: NODES
-        - label: limma (general)
-          value: limma
         - label: edgeR (general)
           value: edgeR
         - label: SCDE (single cell; very slow)
