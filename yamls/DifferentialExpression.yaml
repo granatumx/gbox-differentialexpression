@@ -33,7 +33,7 @@ frontend:
       type: number
   imports:
     - kind: assay
-      label: Assay (recommended to use normalized assay only)
+      label: Assay (recommended to use normalized assay only, without taking log)
       injectInto: assay
     - kind: sampleMeta
       label: Sample groups to compare
