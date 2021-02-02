@@ -21,7 +21,7 @@ frontend:
           value: NODES
         - label: edgeR (general)
           value: edgeR
-      default: NODES
+      default: edgeR
       injectInto: deMethod
     - type: seed
       label: Random seed
