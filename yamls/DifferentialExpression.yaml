@@ -31,6 +31,11 @@ frontend:
       label: Filter FDR less than this threshold (0.05)
       default: 0.05
       type: number
+    - injectInto: pairwise
+      label: Pairwise comparison between groups?
+      description: You can either have pairwise comparison or you could compare between two groups. If you need to merge controls or targets first, you can use the 'Merge Drop Clusters' gbox
+      default: false
+      type: checkbox
   imports:
     - kind: assay
       label: Assay (recommended to use normalized assay only, without taking log)

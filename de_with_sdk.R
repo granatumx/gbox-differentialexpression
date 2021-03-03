@@ -306,7 +306,7 @@ set.seed(rand_seed)
 
 # Method: NODES, limma, edgeR, SCDE
 selected_de <- gn_get_arg('deMethod')
-
+pairwise_arg <- gn_get_arg('pairwise')
 fdrthreshold <- gn_get_arg('fdrthreshold')
 
 # Normalized assay
@@ -348,7 +348,7 @@ if (selected_de == 'SCDE') {
   expr_matrix <- apply(expr_matrix,2,function(x) {storage.mode(x) <- 'integer'; x})
 }
 
-out_tab <- do_diff_exp(expr_matrix, expr_groups, pairwise=F, n_cores=detectCores()-1, selected_de)
+out_tab <- do_diff_exp(expr_matrix, expr_groups, pairwise=as.logical(pairwise_arg), n_cores=detectCores()-1, selected_de)
 
 
 # Output allowing for dynamic UI in these results output (revision 3)
