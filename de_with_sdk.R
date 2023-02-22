@@ -9,6 +9,7 @@ library(scde)
 library(jsonlite)
 library(MetaDE)
 library(parallel)
+library(readr)
 
 source('./granatum_sdk.R') # Uses GranatumX SDK
 
@@ -486,6 +487,7 @@ for (p in names(out_tab)) {
                          sprintf("DE table: %s",pair_field),
                          kind="geneMeta",
                          meta=NULL)
+    gn_export_dynamically(format_csv(output[["exports"]][[pair_field]]), sprintf("DEtable%s.csv", pair_field))
   }
 }
 
